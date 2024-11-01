@@ -9,6 +9,7 @@ from magazine.io import get_file_size, assert_directory, get_script_directory
 # Todo: Update to PyPdf 3.*
 # https://pypdf.readthedocs.io/en/latest/search.html?q=&check_keywords=yes&area=default
 import fpdf
+
 # log.getLogger("fpdf.svg").propagate = False
 
 
@@ -25,15 +26,15 @@ class Publish:
     """
 
     def __init__(
-            self,
-            filename: str,
-            title: str = "",
-            info: str = "",
-            datetime_fmt: str = "%Y-%m-%d %H:%M",
-            page_numbers: bool = True
-        ):
+        self,
+        filename: str,
+        title: str = "",
+        info: str = "",
+        datetime_fmt: str = "%Y-%m-%d %H:%M",
+        page_numbers: bool = True,
+    ):
         self.filename = filename
-        self.file_format = filename[filename.rindex(".")+1:].lower()
+        self.file_format = filename[filename.rindex(".") + 1 :].lower()
         self.title = title
         self.info = info
         self.page_numbers = page_numbers
@@ -43,14 +44,13 @@ class Publish:
     def __enter__(self):
         if self.file_format == "pdf":
             self.magazine = PDF(
-                self.title,
-                self.info,
-                self.datetime_fmt,
-                self.page_numbers
+                self.title, self.info, self.datetime_fmt, self.page_numbers
             )
             return self.magazine
-        else:            
-            log.error("The requested magazine format is not supported: {}", self.file_format)
+        else:
+            log.error(
+                "The requested magazine format is not supported: {}", self.file_format
+            )
             return None
 
     def __exit__(self, type, value, traceback):
@@ -62,7 +62,7 @@ class Publish:
             log.success(
                 "Magazine published: {} ({})",
                 self.filename,
-                get_file_size(self.filename, human_readable=True)
+                get_file_size(self.filename, human_readable=True),
             )
 
 
@@ -90,11 +90,11 @@ class PDF(fpdf.FPDF):
     ln1 = dict(new_x=fpdf.enums.XPos.LMARGIN, new_y=fpdf.enums.YPos.NEXT)
 
     def __init__(
-        self, 
+        self,
         title: str = "",
         info: str = "",
         datetime_fmt: str = "",
-        page_numbers: bool = True
+        page_numbers: bool = True,
     ):
         super().__init__()
 
@@ -135,15 +135,10 @@ class PDF(fpdf.FPDF):
         self.cell(35, 8, self.info, border=True, align="C", **self.ln0)
 
         # datetime
-        datetime_str = "" if not self.datetime_fmt else datetime.now().strftime(self.datetime_fmt)
-        self.cell(
-            45,
-            8,
-            datetime_str,
-            border=True,
-            align="C",
-            **self.ln0
+        datetime_str = (
+            "" if not self.datetime_fmt else datetime.now().strftime(self.datetime_fmt)
         )
+        self.cell(45, 8, datetime_str, border=True, align="C", **self.ln0)
 
         # page
         page_str = "" if not self.page_numbers else "%2s " % str(self.page_no())
@@ -162,7 +157,7 @@ class PDF(fpdf.FPDF):
         if title is None:
             title = self.header_text
         self.set_font(self.font, style=style, size=24)
-        self.cell(w=0, h=20, txt=title, **self.ln1)
+        self.cell(w=0, h=20, text=title, **self.ln1)
         self.set_font(style="", size=self.font_size)
         # self.ln(self.cell_height)
 
@@ -174,7 +169,7 @@ class PDF(fpdf.FPDF):
         """
         if text is None:
             text = ""
-        self.multi_cell(w=0, h=5, txt=text)
+        self.multi_cell(w=0, h=5, text=text)
         self.ln(self.cell_height)
 
     add_text = add_paragraph
