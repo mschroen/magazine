@@ -20,6 +20,8 @@ with Publish("Report.pdf", "My physics report", info="Version 0.1") as M:
     M.add_story("Experiment")
 ```
 
+- View the resulting magazine in [output/Report.pdf](https://github.com/mschroen/magazine/blob/main/output/Report.pdf).
+- Check also `example.py` for more examples.
 
 ## Install
 
