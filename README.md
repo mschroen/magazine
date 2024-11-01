@@ -30,6 +30,9 @@ pip install magazine
 ```
 
 Requires:
-- loguru
 - fpdf2
+- neatlogger (wrapper for loguru)
 
+## Acknowledgements
+
+- Uses the Google font [Roboto](https://fonts.google.com/specimen/Roboto) as it just looks great in PDFs.

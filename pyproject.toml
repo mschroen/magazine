@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "Magazine"
-version = "0.1.4"
+version = "0.2.0"
 description = "Let your code take comprehensive notes and publish notes and figures as a beautiful consolidated PDF document."
 authors = ["Martin Schrön <martin@schroen.eu>"]
 license = "MIT"
@@ -16,7 +16,7 @@ include = [
 python = ">3.9"
 numpy = "<2.0"
 fpdf2 = ">2.8"
-loguru = ">0.7"
+neatlogger
 
 [tool.poetry.dev-dependencies]
 pytest = ">3.0"

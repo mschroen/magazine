@@ -1,5 +1,5 @@
 from datetime import datetime
-from loguru import logger as log
+from neatlogger import log
 
 from magazine import Story
 from magazine.io import get_file_size, assert_directory, get_script_directory

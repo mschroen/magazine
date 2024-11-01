@@ -1,9 +1,13 @@
 # %%
-import sys
-from loguru import logger as log
+# import sys
+# from loguru import logger as log
 
-log.remove()
-log.add(sys.stderr, colorize=True, format="<level>{level: <8}</> <level>{message}</>")
+# log.remove()
+# log.add(sys.stderr, colorize=True, format="<level>{level: <8}</> <level>{message}</>")
+# Activate logging (a wrapper to loguru to logging)
+from neatlogger import log
+
+log.new("Welcome to the Magazine example!")
 
 # Load this package
 from magazine import Story, Publish
@@ -15,6 +19,8 @@ from figurex import Figure
 import example_submodule
 
 # %%
+log.progress("Writing stories...")
+
 # Take some first notes
 Story.report("Important topic", "The script has only {} characters.", 42)
 # Let the submodule take some notes
@@ -31,6 +37,7 @@ with Figure(backend="agg") as ax:
 Story.report("Important topic", Figure.as_object(ax))
 
 # %%
+log.write("Publishing...")
 # Collect all notes and write the stories into the magazine PDF.
 with Publish("output/Magazine.pdf", "My Magazine", info="Version 0.1") as M:
     for story in Story.stories:

@@ -1,6 +1,6 @@
 import io
 import numpy as np
-from loguru import logger as log
+from neatlogger import log
 
 
 class Story:
@@ -71,7 +71,7 @@ class Story:
             Story.figures[category].append(message)
 
         else:
-            log.warn("Nothing to report: message is neither text nor image.")
+            log.warning("Nothing to report: message is neither text nor image.")
 
     @staticmethod
     def post(*categories) -> str:
