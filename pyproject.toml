@@ -16,7 +16,7 @@ include = [
 python = ">3.9"
 numpy = "<2.0"
 fpdf2 = ">2.8"
-neatlogger
+neatlogger = ">=0.1"
 
 [tool.poetry.dev-dependencies]
 pytest = ">3.0"
