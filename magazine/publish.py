@@ -4,6 +4,7 @@ from loguru import logger as log
 from magazine import Story
 from magazine.io import get_file_size, assert_directory, get_script_directory
 
+
 # Requires FPDF
 # https://py-pdf.github.io/fpdf2/
 # Todo: Update to PyPdf 3.*
@@ -205,7 +206,12 @@ class PDF(fpdf.FPDF):
                 self.image(obj, x=x, y=y, w=w, h=h, link=link)
                 self.ln(self.cell_height)
 
-    add_figure = add_image
+    def add_figure(self, category=None, headers=False, new_page=False):
+        if new_page:
+            self.add_page()
+        if headers:
+            self.add_title(category)
+        self.add_image(Story.figure(category))
 
     def add_table(self, data=None, align="RIGHT", index=False):
         """
