@@ -1,0 +1,4 @@
+magazine
+fpdf2
+loguru
+numpy
