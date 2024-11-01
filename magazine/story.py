@@ -2,6 +2,7 @@ import io
 import numpy as np
 from loguru import logger as log
 
+
 class Story:
     """
     Scope:
@@ -97,8 +98,6 @@ class Story:
         for category in categories:
             Story.assert_category(category)
             for figure in Story.figures[category]:
-                Story.figures.append(figure)
+                figures.append(figure)
 
         return figures
-
-

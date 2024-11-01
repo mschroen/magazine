@@ -108,10 +108,10 @@ class PDF(fpdf.FPDF):
         # fonts
         font_folder = get_script_directory() + "/fonts/"
         # font_folder = os.path.dirname(os.path.abspath(__file__)) + "/../app/_ui/fonts/"
-        self.add_font("Roboto", "", font_folder + "Roboto-Regular.ttf", uni=True)
-        self.add_font("Roboto", "B", font_folder + "Roboto-Bold.ttf", uni=True)
-        self.add_font("RobotoM", "", font_folder + "RobotoMono-Regular.ttf", uni=True)
-        self.add_font("RobotoM", "B", font_folder + "RobotoMono-Bold.ttf", uni=True)
+        self.add_font("Roboto", "", font_folder + "Roboto-Regular.ttf")
+        self.add_font("Roboto", "B", font_folder + "Roboto-Bold.ttf")
+        self.add_font("RobotoM", "", font_folder + "RobotoMono-Regular.ttf")
+        self.add_font("RobotoM", "B", font_folder + "RobotoMono-Bold.ttf")
 
     def header(self):
         """
