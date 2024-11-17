@@ -20,6 +20,8 @@ import example_submodule
 
 # %%
 log.progress("Writing stories...")
+# Clean stories, only needed for repeated cell execution
+Story.clean()
 
 # Take some first notes
 Story.report("Important topic", "The script has only {} characters.", 42)

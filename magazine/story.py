@@ -101,3 +101,12 @@ class Story:
                 figures.append(figure)
 
         return figures
+
+    @staticmethod
+    def clean():
+        Story.stories = dict()
+        Story.figures = dict()
+        Story.references = []
+        return
+
+    new = clean
