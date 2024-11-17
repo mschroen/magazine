@@ -33,6 +33,7 @@ class Story:
 
     stories = dict()
     figures = dict()
+    references = []
 
     def __init__(self):
         # self.story = dict()
@@ -74,6 +75,18 @@ class Story:
             log.warning("Nothing to report: message is neither text nor image.")
 
     @staticmethod
+    def cite(*dois):
+        """
+        Appends a DOI to the story that canbe later converted to a reference list.
+
+        Usage
+        -----
+        Story.cite("10.5194/hess-27-723-2023", "10.1029/2021gl093924")
+        """
+        for doi in dois:
+            Story.references.append(doi)
+
+    @staticmethod
     def post(*categories) -> str:
         """
         Joins the category's list on a single space.
@@ -101,6 +114,18 @@ class Story:
                 figures.append(figure)
 
         return figures
+
+    @staticmethod
+    def collect_references() -> str:
+        log.progress("Collecting {} citations from CrossRef...", len(Story.references))
+        from habanero import cn
+
+        reftexts = cn.content_negotiation(ids=Story.references, format="text")
+        if isinstance(reftexts, str):
+            reftexts = [reftexts]
+        reftexts = [ref.rstrip() for ref in reftexts if ref is not None]
+        reftexts.sort()
+        return reftexts
 
     @staticmethod
     def clean():

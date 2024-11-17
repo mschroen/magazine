@@ -15,9 +15,11 @@ from magazine import Story, Publish
 
 E = 42
 Story.report("Experiment", "The analysis found that energy equals {} Joule.", E)
+Story.cite("10.1002/andp.19163540702")
 
 with Publish("Report.pdf", "My physics report", info="Version 0.1") as M:
     M.add_story("Experiment")
+    M.add_references()
 ```
 
 - View the resulting magazine in [output/Report.pdf](https://github.com/mschroen/magazine/blob/main/output/Report.pdf).
@@ -31,6 +33,7 @@ pip install magazine
 
 Requires:
 - fpdf2
+- habanero (for academic citations)
 - neatlogger (wrapper for loguru)
 
 ## Acknowledgements

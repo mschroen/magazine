@@ -249,3 +249,14 @@ class PDF(fpdf.FPDF):
 
         self.set_font(self.font, style="", size=self.font_size)
         self.ln(self.cell_height)
+
+    def add_references(self, headers="References", new_page=True):
+        if new_page:
+            self.add_page()
+        if headers:
+            self.add_title("References")
+
+        reftexts = Story.collect_references()
+        # for ref in reftexts:
+        #   self.add_paragraph(ref)
+        self.add_paragraph("\n\n".join(reftexts))
