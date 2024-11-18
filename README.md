@@ -26,7 +26,10 @@ with Publish("Report.pdf", "My physics report", info="Version 0.1") as M:
 ```
 
 - View the resulting magazine in [output/Report.pdf](https://github.com/mschroen/magazine/blob/main/output/Report.pdf).
-- Check also `example.py` for more examples.
+- Check also [example.py](https://github.com/mschroen/magazine/blob/main/example.py) and [output/Magazine.pdf](https://github.com/mschroen/magazine/blob/main/output/Magazine.pdf) for more examples.
+
+![Example output PDF report](https://github.com/mschroen/magazine/blob/main/docs/magazin-preview.png)
+
 
 ## Documentation
 
