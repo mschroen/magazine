@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "Magazine"
-version = "0.2.1"
+version = "0.2.2"
 description = "Let your code take comprehensive notes and publish notes and figures as a beautiful consolidated PDF document."
 authors = ["Martin Schrön <martin@schroen.eu>"]
 license = "MIT"

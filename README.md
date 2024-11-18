@@ -1,5 +1,8 @@
 # Magazine
-
+[![PyPi Version](https://img.shields.io/pypi/v/magazine.svg)](https://pypi.python.org/pypi/magazine/)
+[![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/mschroen/magazine/blob/main/LICENSE)
+[![Read the Docs](https://readthedocs.org/projects/magazine/badge/?version=latest)](https://magazine.readthedocs.io/en/latest/?badge=latest)
+[![Issues](https://img.shields.io/github/issues-raw/mschroen/magazine.svg?maxAge=25000)](https://github.com/mschroen/magazine/issues)  
 Let your code take comprehensive notes and publish notes and figures as a beautiful consolidated PDF document.
 
 ## Idea

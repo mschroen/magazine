@@ -1,4 +1,5 @@
 from datetime import datetime
+import pandas as pd
 from neatlogger import log
 
 from magazine import Story
@@ -16,14 +17,18 @@ import fpdf
 
 class Publish:
     """
-    Usage:
-        with magazine.Publish("example.pdf", "My Title") as M:
-            M.add_page()
-            M.add_title("Chapter 1)
-            M.add_paragraph("Long text")
-            M.add_image(figure)
-            M.add_table(data)
-            ...
+    Context manager to write all stories, figures, and references into a PDF file.
+    Uses FPDF2.
+    
+    Examples
+    --------        
+    >>> with magazine.Publish("example.pdf", "My Title") as M:
+    ...     M.add_page()
+    ...     M.add_title("Chapter 1)
+    ...     M.add_paragraph("Long text")
+    ...     M.add_image(figure)
+    ...     M.add_table(data)
+
     """
 
     def __init__(
@@ -70,15 +75,19 @@ class Publish:
 ######################
 class PDF(fpdf.FPDF):
     """
-    Usage:
-        pdf = PDF()
-        pdf.header_text = "My title"
-        pdf.add_page()
-        ...
-        pdf.output("my_title.pdf")
+    PDF writer and wrapper for FPDF
 
-    Credits:
-        Thanks to https://py-pdf.github.io/fpdf2/Maths.html
+    Examples
+    --------
+    >>> pdf = PDF()
+    ... pdf.header_text = "My title"
+    ... pdf.add_page()
+    ... pdf.output("my_title.pdf")
+
+    Notes
+    -----
+    Thanks to: https://py-pdf.github.io/fpdf2/Maths.html
+
     """
 
     # These variables can be changed individually if necessary
@@ -116,7 +125,7 @@ class PDF(fpdf.FPDF):
 
     def header(self):
         """
-        Overwrites FPDF's header function.
+        Overwrites the FPDF's header function with a table:
         | %title | %info | %datetime | %page |
         """
 
@@ -151,9 +160,22 @@ class PDF(fpdf.FPDF):
     #     self.set_font('Courier', '', 12)
     #     self.cell(0, 8, f'Page {self.page_no()}', True, align='C', **ln0)
 
-    def add_title(self, title=None, style="B"):
+    def add_title(self, title: str = None, style: str = "B"):
         """
-        Add a chapter title
+        Add a chapter title.
+
+        Parameters
+        ----------
+        title: str
+            Title of the page, can be empty.
+        style: str, optional
+            Font style, is "B" for bold by default.
+
+        Examples
+        --------
+        >>> with Publish("example.pdf") as M:
+        ...     M.add_title("My title")
+
         """
         if title is None:
             title = self.header_text
@@ -164,9 +186,20 @@ class PDF(fpdf.FPDF):
 
     add_head = add_title
 
-    def add_paragraph(self, text=None):
+    def add_paragraph(self, text: str = None):
         """
         Add a multiline paragraph.
+
+        Parameters
+        ----------
+        text: str
+            Text to be written.
+
+        Examples
+        --------
+        >>> with Publish("example.pdf") as M:
+        ...     M.add_paragraph("Very long text.")
+
         """
         if text is None:
             text = ""
@@ -175,26 +208,72 @@ class PDF(fpdf.FPDF):
 
     add_text = add_paragraph
 
-    def add_story(self, category=None, headers=True, new_page=True):
+    def add_story(
+        self,
+        category: str = None,
+        headers: bool = True,
+        new_page: bool = True
+    ):
+        """
+        Shortcut to add a page, title, and story text.
+
+        Parameters
+        ----------
+        category : str
+            Category to take the story from.
+        headers : bool, optional
+            Write a headline, by default True
+        new_page : bool, optional
+            Create a new page, by default True
+
+        Examples
+        --------
+        >>> with Publish("example.pdf") as M:
+        ...     M.add_story("Experiments")
+        """
         if new_page:
             self.add_page()
         if headers:
             self.add_title(category)
         self.add_paragraph(Story.post(category))
 
-    def add_image(self, source=None, x=None, y=None, w=None, h=0, link=""):
+    def add_image(
+        self,
+        source=None,
+        x: float = None,
+        y: float = None,
+        w: float = None,
+        h: float = 0,
+        link: str = ""
+    ):
         """
-        Can be a file path (png, jpg) or an image buffer or a list of them.
-        For image buffers use before:
-            img_buf = BytesIO()
-            plt.savefig(img_buf, format="svg")
-        Or use Corny:
-            from corny.figures import Figure
-            with Figure(size=(5,5), save="buff") as F:
-                ax = F.axes
-                ax.scatter(data=df)
-            img_buf = F.buff
+        Write an image to PDF. 
+
+        Parameters
+        ----------
+        source : string or object or list of objects, optional
+            Can be a file path (png, jpg) or an image buffer or a list of them., by default None
+        x : float, optional
+            x coords of image, by default None
+        y : float, optional
+            y coords of image, by default None
+        w : float, optional
+            width of image, by default None
+        h : float, optional
+            height of image, scales automatically with width, by default 0
+        link : str, optional
+            link for the image, by default ""
+
+        Examples
+        --------
+        >>> image_object = io.BytesIO()
+        ... plt.savefig(image_object, format="svg")
+        ... with Publish("example.pdf") as M:
+        ...     M.add_image(image_object)
+        ...     M.add_image("image_file.png")
+
         """
+
         if w is None:
             w = self.epw
 
@@ -206,18 +285,54 @@ class PDF(fpdf.FPDF):
                 self.image(obj, x=x, y=y, w=w, h=h, link=link)
                 self.ln(self.cell_height)
 
-    def add_figure(self, category=None, headers=False, new_page=False):
+    def add_figure(self, category: str = None, headers: bool = False, new_page: bool = False):
+        """
+        Write all figures of a category to the PDF.
+
+        Parameters
+        ----------
+        category : str, optional
+            Existing category, by default None
+        headers : bool, optional
+            Add a category headline before the figure, by default False
+        new_page : bool, optional
+            Create a new page, by default False
+
+        Examples
+        --------
+        >>> image_object = io.BytesIO()
+        ... plt.savefig(image_object, format="svg")
+        ... Story.report("Experiments", image_object)
+        ... with Publish("example.pdf") as M:
+        ...     M.add_figure("Experiments")
+
+        """
         if new_page:
             self.add_page()
         if headers:
             self.add_title(category)
         self.add_image(Story.figure(category))
 
-    def add_table(self, data=None, align="RIGHT", index=False):
+    def add_table(self, data: pd.DataFrame = None, align: str = "RIGHT", index: bool = False):
         """
-        Add a table, just provide a pandas DataFrame
-        """
+        Add a table for a pandas DataFrame.
 
+        Parameters
+        ----------
+        data : pd.DataFrame, optional
+            DataFrame to print to the PDF, by default None
+        align : str, optional
+            Alignment of the cell text, by default "RIGHT"
+        index : bool, optional
+            Whether or not to display the index column, by default False
+
+        Examples
+        --------
+        >>> data = pd.DataFrame({"name":["Tim", "Tom"], "age":[12,13]})
+        ... with Publish("example.pdf") as M:
+        ...     M.add_table(data, index=True)
+
+        """
         self.set_font(self.font_mono, size=7)
 
         if "Date" in data.columns:
@@ -250,13 +365,33 @@ class PDF(fpdf.FPDF):
         self.set_font(self.font, style="", size=self.font_size)
         self.ln(self.cell_height)
 
-    def add_references(self, headers="References", new_page=True):
+    def add_references(self, headers: str = "References", new_page: bool = True):
+        """
+        Create a list of references that were previously added by Story.cite()
+        This function will look up the full citations text using the habanero package.
+
+        Parameters
+        ----------
+        headers : str, optional
+            Title of the references page, by default "References"
+        new_page : bool, optional
+            Whether or not to add a new page, by default True
+
+        Examples
+        --------
+        >>> Story.cite("10.1029/2021gl093924")
+        ... with Publish("example.pdf") as M:
+        ...     M.add_references()
+
+        """
+
         if new_page:
             self.add_page()
         if headers:
             self.add_title("References")
 
         reftexts = Story.collect_references()
+        
         # for ref in reftexts:
         #   self.add_paragraph(ref)
         self.add_paragraph("\n\n".join(reftexts))
