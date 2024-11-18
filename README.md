@@ -28,6 +28,13 @@ with Publish("Report.pdf", "My physics report", info="Version 0.1") as M:
 - View the resulting magazine in [output/Report.pdf](https://github.com/mschroen/magazine/blob/main/output/Report.pdf).
 - Check also `example.py` for more examples.
 
+## Documentation
+
+A documentation and API reference can be found on [ReadTheDocs](https://magazine.readthedocs.io/en/latest):
+- [Story](https://magazine.readthedocs.io/en/latest/#magazine.story.Story) (class)
+- [Publish](https://magazine.readthedocs.io/en/latest/#magazine.publish.Publish) (context manager)
+- [PDF commands](https://magazine.readthedocs.io/en/latest/#magazine.publish.PDF) (class)
+
 ## Install
 
 ```bash
