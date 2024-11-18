@@ -4,3 +4,4 @@ neatlogger
 loguru
 numpy
 habanero
+pandas
