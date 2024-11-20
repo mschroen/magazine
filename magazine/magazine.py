@@ -259,6 +259,12 @@ class Magazine:
                 func_globals = func.__globals__
                 func_globals["_report"] = self.parameters
 
+                # Call the actual function and clean up afterwards
+                try:
+                    result = func(*args, **kwargs)
+                finally:
+                    del func_globals["_report"]
+
                 # Set some predefined parameters
                 self.parameters["function"] = func.__name__
                 self.parameters["args"] = args
@@ -266,12 +272,6 @@ class Magazine:
                 # Set input parameters
                 for kw in kwargs:
                     self.parameters[kw] = kwargs[kw]
-
-                # Call the actual function and clean up afterwards
-                try:
-                    result = func(*args, **kwargs)
-                finally:
-                    del func_globals["_report"]
 
                 # Parse the docstring
                 self._parse_docstring(func.__doc__)
