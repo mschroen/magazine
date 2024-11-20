@@ -1,4 +1,7 @@
-from magazine import Story
+from magazine import Magazine
+
 
 def myfunction():
-    Story.report("Important topic","We also found that it consists of {} words.", 11)
+    Magazine.report(
+        "Important topic", "We also found that it consists of {} words.", 11
+    )

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "Magazine"
-version = "0.2.2"
+version = "0.3.0"
 description = "Let your code take comprehensive notes and publish notes and figures as a beautiful consolidated PDF document."
 authors = ["Martin Schrön <martin@schroen.eu>"]
 license = "MIT"
@@ -23,6 +23,9 @@ neatlogger = ">=0.1"
 [tool.poetry.dev-dependencies]
 pytest = ">3.0"
 
+
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.29.5"
 
 [build-system]
 requires = ["poetry-core"]

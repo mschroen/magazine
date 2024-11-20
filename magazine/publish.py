@@ -2,14 +2,11 @@ from datetime import datetime
 import pandas as pd
 from neatlogger import log
 
-from magazine import Story
+from magazine import Magazine
 from magazine.io import get_file_size, assert_directory, get_script_directory
 
 
-# Requires FPDF
-# https://py-pdf.github.io/fpdf2/
-# Todo: Update to PyPdf 3.*
-# https://pypdf.readthedocs.io/en/latest/search.html?q=&check_keywords=yes&area=default
+# Requires FPDF, https://py-pdf.github.io/fpdf2/
 import fpdf
 
 # log.getLogger("fpdf.svg").propagate = False
@@ -17,12 +14,13 @@ import fpdf
 
 class Publish:
     """
-    Context manager to write all stories, figures, and references into a PDF file.
+    Context manager to write all reports, figures, and references into a PDF file.
     Uses FPDF2.
-    
+
     Examples
-    --------        
-    >>> with magazine.Publish("example.pdf", "My Title") as M:
+    --------
+
+    >>> with Magazine.Publish("example.pdf", "My Title") as M:
     ...     M.add_page()
     ...     M.add_title("Chapter 1)
     ...     M.add_paragraph("Long text")
@@ -208,19 +206,14 @@ class PDF(fpdf.FPDF):
 
     add_text = add_paragraph
 
-    def add_story(
-        self,
-        category: str = None,
-        headers: bool = True,
-        new_page: bool = True
-    ):
+    def add_topic(self, topic: str = None, headers: bool = True, new_page: bool = True):
         """
-        Shortcut to add a page, title, and story text.
+        Shortcut to add a page, title, and topic text.
 
         Parameters
         ----------
-        category : str
-            Category to take the story from.
+        topic : str
+            Topic to take the report from.
         headers : bool, optional
             Write a headline, by default True
         new_page : bool, optional
@@ -229,13 +222,13 @@ class PDF(fpdf.FPDF):
         Examples
         --------
         >>> with Publish("example.pdf") as M:
-        ...     M.add_story("Experiments")
+        ...     M.add_topic("Experiments")
         """
         if new_page:
             self.add_page()
         if headers:
-            self.add_title(category)
-        self.add_paragraph(Story.post(category))
+            self.add_title(topic)
+        self.add_paragraph(Magazine.post(topic))
 
     def add_image(
         self,
@@ -244,10 +237,10 @@ class PDF(fpdf.FPDF):
         y: float = None,
         w: float = None,
         h: float = 0,
-        link: str = ""
+        link: str = "",
     ):
         """
-        Write an image to PDF. 
+        Write an image to PDF.
 
         Parameters
         ----------
@@ -285,16 +278,18 @@ class PDF(fpdf.FPDF):
                 self.image(obj, x=x, y=y, w=w, h=h, link=link)
                 self.ln(self.cell_height)
 
-    def add_figure(self, category: str = None, headers: bool = False, new_page: bool = False):
+    def add_figure(
+        self, topic: str = None, headers: bool = False, new_page: bool = False
+    ):
         """
-        Write all figures of a category to the PDF.
+        Write all figures of a topic to the PDF.
 
         Parameters
         ----------
-        category : str, optional
-            Existing category, by default None
+        topic : str, optional
+            Existing topic, by default None
         headers : bool, optional
-            Add a category headline before the figure, by default False
+            Add a topic headline before the figure, by default False
         new_page : bool, optional
             Create a new page, by default False
 
@@ -302,7 +297,7 @@ class PDF(fpdf.FPDF):
         --------
         >>> image_object = io.BytesIO()
         ... plt.savefig(image_object, format="svg")
-        ... Story.report("Experiments", image_object)
+        ... Magazine.report("Experiments", image_object)
         ... with Publish("example.pdf") as M:
         ...     M.add_figure("Experiments")
 
@@ -310,10 +305,12 @@ class PDF(fpdf.FPDF):
         if new_page:
             self.add_page()
         if headers:
-            self.add_title(category)
-        self.add_image(Story.figure(category))
+            self.add_title(topic)
+        self.add_image(Magazine.figure(topic))
 
-    def add_table(self, data: pd.DataFrame = None, align: str = "RIGHT", index: bool = False):
+    def add_table(
+        self, data: pd.DataFrame = None, align: str = "RIGHT", index: bool = False
+    ):
         """
         Add a table for a pandas DataFrame.
 
@@ -367,7 +364,7 @@ class PDF(fpdf.FPDF):
 
     def add_references(self, headers: str = "References", new_page: bool = True):
         """
-        Create a list of references that were previously added by Story.cite()
+        Create a list of references that were previously added by Magazine.cite()
         This function will look up the full citations text using the habanero package.
 
         Parameters
@@ -379,7 +376,7 @@ class PDF(fpdf.FPDF):
 
         Examples
         --------
-        >>> Story.cite("10.1029/2021gl093924")
+        >>> Magazine.cite("10.1029/2021gl093924")
         ... with Publish("example.pdf") as M:
         ...     M.add_references()
 
@@ -390,8 +387,8 @@ class PDF(fpdf.FPDF):
         if headers:
             self.add_title("References")
 
-        reftexts = Story.collect_references()
-        
+        reftexts = Magazine.collect_references()
+
         # for ref in reftexts:
         #   self.add_paragraph(ref)
         self.add_paragraph("\n\n".join(reftexts))

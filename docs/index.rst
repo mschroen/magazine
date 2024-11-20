@@ -10,7 +10,7 @@ Magazine documentation
    :maxdepth: 2
    :caption: Contents:
 
-.. automodule:: magazine.story
+.. automodule:: magazine.magazine
    :members:
 
 .. automodule:: magazine.publish
