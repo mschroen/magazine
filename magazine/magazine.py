@@ -33,11 +33,9 @@ class Magazine:
 
     Examples
     --------
-    >>> J = Magazine()
-    ... J.report("observations", "Temperature today was {:.2f}.", None)
-    ... J.report("observations", "Data was corrected following {:}, only {:d} points remained.",
-    ...     "Brown et al. (1979)", 42)
-    ... J.post("observations")
+    >>> Magazine.report("observations", "Temperature today was {:.2f}.", None)
+    ... Magazine.report("observations", "Data was corrected following {:}, only {:d} points remained.", "Brown et al. (1979)", 42)
+    ... Magazine.post("observations")
     Temperature today was nan. Data was corrected following Brown et al. (1979), only 42 points remained.
 
     """
@@ -196,7 +194,7 @@ class Magazine:
     @staticmethod
     def collect_references() -> list:
         """
-        Lists all items in Magazine.references
+        Lists all items in Magazine.references.
         Downloads the full reference text for all items in Magazine.dois
 
         Returns

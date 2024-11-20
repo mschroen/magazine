@@ -27,9 +27,7 @@ with Publish("Report.pdf", "My physics report", info="Version 0.1") as M:
 
 - View the resulting magazine in [output/Report.pdf](https://github.com/mschroen/magazine/blob/main/output/Report.pdf).
 
-![Example output PDF report](https://github.com/mschroen/magazine/blob/main/docs/magazine-preview.png)
-
-Instead of inline commands, you can also use a decorator to automatically write and format the content of the docstring section "Report" and its "References" section into the report.
+Instead of inline commands, you can also use a *decorator* to automatically write and format the content of the docstring section "Report" and its "References" section into the report.
 
 ```python
 @Magazine.reporting("Physics")
@@ -64,7 +62,7 @@ al. (1935). The result was: 9. During the process, the magic number 42 appeared.
 
 Check also [example.py](https://github.com/mschroen/magazine/blob/main/example.py) and [output/Magazine.pdf](https://github.com/mschroen/magazine/blob/main/output/Magazine.pdf) for more full examples.
 
-
+![Example output PDF report](https://github.com/mschroen/magazine/blob/main/docs/magazine-preview.png)
 
 
 ## Documentation

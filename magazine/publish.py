@@ -15,11 +15,28 @@ import fpdf
 class Publish:
     """
     Context manager to write all reports, figures, and references into a PDF file.
-    Uses FPDF2.
+    Uses FPDF2 to return a PDF class.
+
+    Parameters
+    ----------
+    filename : str
+        Full path and name of the PDF file.
+    title : str, optional
+        Title to be written in the header, by default ""
+    info : str, optional
+        Any info to be written in the header, e.g. a version number, by default ""
+    datetime_fmt : str, optional
+        How to format the datetime in the header, by default "%Y-%m-%d %H:%M"
+    page_numbers : bool, optional
+        Whether or not to show page numbers, by default True
+
+    Returns
+    -------
+    PDF
+        An instance that inherits from fpdf.FPDF to provide commands to add content to the PDF.
 
     Examples
     --------
-
     >>> with Magazine.Publish("example.pdf", "My Title") as M:
     ...     M.add_page()
     ...     M.add_title("Chapter 1)
