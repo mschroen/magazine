@@ -1,6 +1,5 @@
 import io
 import sys
-import inspect
 import numpy as np
 import re
 from functools import wraps
@@ -244,7 +243,6 @@ class Magazine:
         def __init__(
             self,
             topic,
-            capture_vars=None,
         ):
             """
             Decorator to report input, output, and other exposed variables.
