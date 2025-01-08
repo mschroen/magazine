@@ -245,11 +245,11 @@ class Magazine:
             topic,
         ):
             """
-            Decorator to report input, output, and other exposed variables.
+            Decorator to report input, output, and other variables.
 
             Parameters
             ----------
-            topic (str): The topic of the function.
+            topic (str): The topic (i.e., story title) in the Magazine under which the content will be printed.
 
             """
             self.topic = topic
