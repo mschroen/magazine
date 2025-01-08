@@ -378,6 +378,10 @@ class Magazine:
             @wraps(func)
             def wrapper(*args, **kwargs):
 
+                if not Magazine.active:
+                    result = func(*args, **kwargs)
+                    return result
+
                 if "show" in kwargs:
                     if kwargs["show"] == True:
                         kwargs["show"] = False
