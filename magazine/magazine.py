@@ -1,4 +1,5 @@
 import io
+import sys
 import numpy as np
 import re
 from functools import wraps
@@ -239,7 +240,10 @@ class Magazine:
     new = clean
 
     class reporting:
-        def __init__(self, topic):
+        def __init__(
+            self,
+            topic,
+        ):
             """
             Decorator to report input, output, and other exposed variables.
 
@@ -255,27 +259,34 @@ class Magazine:
             @wraps(func)
             def wrapper(*args, **kwargs):
 
-                # Add the helper to the function's local namespace
-                func_globals = func.__globals__
-                func_globals["_report"] = self.parameters
+                local_vars = {}
 
-                # Call the actual function and clean up afterwards
+                def trace_calls(frame, event, arg):
+                    if event == "return":
+                        # Capture locals when function is returning
+                        local_vars.update(frame.f_locals)
+                    return trace_calls
+
+                # Set up the trace
+                old_trace = sys.gettrace()
+                sys.settrace(trace_calls)
+
                 try:
                     result = func(*args, **kwargs)
                 finally:
-                    del func_globals["_report"]
+                    sys.settrace(old_trace)
 
-                # Set some predefined parameters
-                self.parameters["function"] = func.__name__
-                self.parameters["args"] = args
-                self.parameters["return"] = result
-                # Set input parameters
-                for kw in kwargs:
-                    self.parameters[kw] = kwargs[kw]
+                self.parameters.update(
+                    {
+                        "function": func.__name__,
+                        "return": result,
+                    }
+                )
 
-                # Parse the docstring
+                for key, val in local_vars.items():
+                    self.parameters[key] = val
+
                 self._parse_docstring(func.__doc__)
-
                 return result
 
             return wrapper
