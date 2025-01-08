@@ -9,6 +9,9 @@ from magazine import Magazine, Publish
 # %%
 log.progress("Starting to do stuff and report on the way...")
 
+# Magazine must be turned on or it wont record
+Magazine.turn_on()
+
 # Clean the content, only needed for repeated cell execution
 Magazine.clean()
 
