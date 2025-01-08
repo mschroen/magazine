@@ -48,7 +48,7 @@ def Method_A(a, b, c=3):
 
     Report
     ------
-    The method "{function}" used input parameters {args}, and c={c}.
+    The method "{function}" used input parameters a={a}, b={b}, and c={c}.
     Calculations have been performed following Einstein et al. (1935).
     The result was: {return}. During the process, the magic number {magic} appeared.
 
@@ -59,8 +59,7 @@ def Method_A(a, b, c=3):
     """
     result = a + b + c
 
-    # Function "_report" is provided by the decorator to communicate more variables
-    _report["magic"] = 42
+    magic = 42
 
     return result
 
