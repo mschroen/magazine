@@ -323,3 +323,50 @@ class Magazine:
                     "No docstring provided for function {}.",
                     self.parameters["function"],
                 )
+
+    class reporting_figure:
+        def __init__(
+            self,
+            topic,
+        ):
+            """
+            Decorator to report figures created in that function.
+
+            Parameters
+            ----------
+            topic (str): The topic (i.e., story title) in the Magazine under which the content will be printed.
+
+            Example
+            -------
+            >>> import matplotlib.pyplot as plt
+            ...
+            ... @Magazine.reporting_figure("My topic")
+            ... def make_a_figure():
+            ...     fig, ax = plt.subplots(1,1)
+            ...     ax.plot([1, 2], [3, 4])
+            ...
+            ... make_a_figure()
+            ...
+            ... with Publish("my_figure.pdf") as M:
+            ...     M.add_figure("My topic")
+
+            """
+            self.topic = topic
+
+        def __call__(self, func):
+            @wraps(func)
+            def wrapper(*args, **kwargs):
+
+                if "show" in kwargs:
+                    if kwargs["show"] == True:
+                        kwargs["show"] = False
+
+                from figurex import Figure
+
+                result = func(*args, **kwargs)
+
+                Magazine.report(self.topic, Figure.as_object())
+
+                return result
+
+            return wrapper
