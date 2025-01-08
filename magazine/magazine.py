@@ -45,9 +45,20 @@ class Magazine:
     figures = dict()
     references = []
     dois = []
+    active = False
 
     def __init__(self):
         pass
+
+    @staticmethod
+    def turn_on():
+        """Turns on Magazine reporting"""
+        Magazine.active = True
+
+    @staticmethod
+    def turn_off():
+        """Truns off Magazine reporting"""
+        Magazine.active = False
 
     @staticmethod
     def assert_topic(topic: str):
@@ -91,6 +102,9 @@ class Magazine:
         >>> Magazine.report("Experiments", "Today is {}.", "Monday")
 
         """
+        if not Magazine.active:
+            return
+
         Magazine.assert_topic(topic)
 
         if isinstance(message, str):
@@ -126,6 +140,9 @@ class Magazine:
         >>> Magazine.cite("Einstein, A. (1916). Die Grundlage der allgemeinen Relativitätstheorie. Annalen Der Physik, 354(7), 769–822. Portico")
 
         """
+        if not Magazine.active:
+            return
+
         doi_pattern = r"^10[.][0-9]{4,}"
 
         for ref in refs:
@@ -258,6 +275,10 @@ class Magazine:
         def __call__(self, func):
             @wraps(func)
             def wrapper(*args, **kwargs):
+
+                if not Magazine.active:
+                    result = func(*args, **kwargs)
+                    return result
 
                 local_vars = {}
 

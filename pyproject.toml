@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "Magazine"
-version = "0.3.3"
+version = "0.3.4"
 description = "Let your code take comprehensive notes and publish notes and figures as a beautiful consolidated PDF document."
 authors = ["Martin Schrön <martin@schroen.eu>"]
 license = "MIT"
@@ -8,9 +8,7 @@ readme = "README.md"
 homepage = "https://github.com/mschroen/magazine"
 repository = "https://github.com/mschroen/magazine"
 keywords = ["logging", "reports", "pdf"]
-include = [
-    "LICENSE",
-]
+include = ["LICENSE"]
 
 [tool.poetry.dependencies]
 python = ">3.9"
