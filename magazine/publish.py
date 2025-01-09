@@ -326,7 +326,12 @@ class PDF(fpdf.FPDF):
         self.add_image(Magazine.figure(topic))
 
     def add_table(
-        self, data: pd.DataFrame = None, align: str = "RIGHT", index: bool = False
+        self,
+        data: pd.DataFrame = None,
+        align: str = "RIGHT",
+        index: bool = False,
+        font_size=7,
+        last_column_first=True,
     ):
         """
         Add a table for a pandas DataFrame.
@@ -347,7 +352,7 @@ class PDF(fpdf.FPDF):
         ...     M.add_table(data, index=True)
 
         """
-        self.set_font(self.font_mono, size=7)
+        self.set_font(self.font_mono, size=font_size)
 
         if "Date" in data.columns:
             data["Date"] = data.index.strftime("%Y-%m-%d")
@@ -355,7 +360,8 @@ class PDF(fpdf.FPDF):
             data[data.index.name] = data.index
 
         cols = list(data.columns)
-        cols = [cols[-1]] + cols[:-1]
+        if last_column_first:
+            cols = [cols[-1]] + cols[:-1]
         data = data[cols]
 
         data = data.astype(str)
