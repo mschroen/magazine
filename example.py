@@ -6,6 +6,10 @@ log.new("Welcome to the Magazine example!")
 # Load this package
 from magazine import Magazine, Publish
 
+# Tools for plotting
+import matplotlib.pyplot as plt
+from figurex import Figure
+
 # %%
 log.progress("Starting to do stuff and report on the way...")
 
@@ -32,18 +36,37 @@ Magazine.cite("10.1002/andp.19163540702")
 # On a different topic, take notes as well
 Magazine.report("Correction", "Everything on page 1 is wrong.")
 
-# Make a plot with the matplotlib wrapper from figurex.
-# The "agg" backend is important for later PDF export.
-from figurex import Figure
-
+# %%
+# Make a plot with Figure() context manager
 with Figure(backend="agg", show=False) as ax:
-    ax.plot([1, 2], [3, 4])
+    ax.scatter([1, 2], [3, 4])
 
-# Store the plot into the Magazine as well
+# Store the plot into the Magazine
 Magazine.report("Important topic", Figure.as_object())
 
+# %%
+# Make a plot with matplotlib
+fig, ax = plt.subplots()
+ax.scatter([10, 3, 5], [-1, 0, 10])
 
-# Instead of inline commands, you can also use a decorator:
+# Store the plot into the Magazine
+Magazine.report("Physics", Figure.as_object())
+
+# %%
+# Make a figure and report it using decorators
+
+
+@Magazine.reporting_figure("Correction")
+def make_and_report_figure():
+    with Figure(size=(6, 2), backend="agg", show=False) as ax:
+        ax.plot([1, 2], [3, 4])
+
+
+make_and_report_figure()
+
+
+# %%
+# Instead of inline commands, you can also use a decorator for text reporting:
 @Magazine.reporting("Physics")
 def Method_A(a, b, c=3):
     """
