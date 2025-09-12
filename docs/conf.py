@@ -7,7 +7,7 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = "Magazine"
-copyright = "2024, Martin Schrön"
+copyright = "2025, Martin Schrön"
 author = "Martin Schrön"
 
 # -- General configuration ---------------------------------------------------

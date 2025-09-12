@@ -105,3 +105,5 @@ with Publish("output/Magazine.pdf", "My Magazine", info="Version 1.0") as M:
 
     # Reference page
     M.add_references()
+
+# %%

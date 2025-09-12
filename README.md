@@ -77,11 +77,12 @@ A documentation and API reference can be found on [ReadTheDocs](https://magazine
 ```bash
 pip install magazine
 ```
+If you are working with `uv`, use `uv add magazine`.
 
 Requires:
 - fpdf2
-- habanero (optional, for academic citations)
-- neatlogger (wrapper for loguru)
+- habanero *(optional, for academic citations)*
+- neatlogger *(wrapper for loguru)*
 
 ## Acknowledgements
 
