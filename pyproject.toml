@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "Magazine"
-version = "0.3.9"
+version = "0.4.0"
 description = "Let your code take comprehensive notes and publish notes and figures as a beautiful consolidated PDF document."
 authors = [{name = "Martin Schrön", email = "martin@schroen.eu"}]
 license = "MIT"
@@ -37,7 +37,7 @@ where = ["."]
 include = ["magazine*"]
 
 [tool.setuptools.package-data]
-magazine = ["*.txt", "*.md"]
+magazine = ["*.txt", "*.md", "fonts/*.ttf"]
 
 [tool.setuptools]
 include-package-data = true
